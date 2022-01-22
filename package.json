@@ -1,0 +1,42 @@
+{
+  "name": "setup-trellis-cli",
+  "version": "1.0.0",
+  "description": "Sets up Trellis CLI for GitHub Action workflows",
+  "main": "index.js",
+  "scripts": {
+    "build": "ncc build",
+    "prepare": "ncc build -o dist --source-map --license licenses.txt",
+    "test": "jest",
+    "all": "npm run prepare && npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roots/setup-trellis-cli.git"
+  },
+  "keywords": [
+    "GitHub",
+    "Actions",
+    "Roots",
+    "WordPress",
+    "Trellis"
+  ],
+  "author": "Scott Walkinshaw <scott@roots.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/roots/setup-trellis-cli/issues"
+  },
+  "homepage": "https://github.com/roots/setup-trellis-cli",
+  "dependencies": {
+    "@actions/cache": "^1.0.8",
+    "@actions/core": "^1.6.0",
+    "@actions/exec": "^1.1.0",
+    "@actions/glob": "^0.2.0",
+    "@actions/http-client": "^1.0.11",
+    "@actions/io": "^1.1.1",
+    "@actions/tool-cache": "^1.7.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.28.6",
+    "jest": "^26.6.3"
+  }
+}

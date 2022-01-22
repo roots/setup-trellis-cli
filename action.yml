@@ -1,0 +1,32 @@
+name: 'Roots - Setup trellis-cli'
+description: 'Sets up Trellis CLI in your GitHub Actions workflow.'
+inputs:
+  auto-init:
+    description: 'Whether to automatically run the `init` command after install (default: true).'
+    required: false
+    default: true
+  ansible-vault-password:
+    description: 'Ansible Vault password (use a GitHub secret for this value). If you do not use Vault, set a placeholder string value anyway.'
+    required: true
+  cache-virtualenv:
+    description: 'Caches the trellis-cli managed virtualenv (default: true).'
+    required: false
+    default: true
+  galaxy-install:
+    description: 'Whether to automatically run `trellix galaxy install` (default: true).'
+    required: false
+    default: true
+  trellis-directory:
+    description: 'Path to Trellis project directory'
+    required: false
+    default: 'trellis'
+  version:
+    description: 'Version of Trellis CLI to install'
+    required: false
+    default: 'latest'
+outputs:
+  version:
+    description: 'The CLI version installed'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

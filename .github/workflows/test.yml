@@ -1,0 +1,78 @@
+name: Tests
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+    - run: mkdir trellis
+    - uses: ./
+      with:
+        ansible-vault-password: fake
+        auto-init: false
+        galaxy-install: false
+  test-with-trellis:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+    - run: git clone https://github.com/roots/trellis.git
+    - uses: ./
+      with:
+        ansible-vault-password: fake
+  test-with-trellis-no-galaxy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+    - run: git clone https://github.com/roots/trellis.git
+    - uses: ./
+      with:
+        ansible-vault-password: fake
+        galaxy-install: false
+  test-with-trellis-no-auto-init:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+    - run: git clone https://github.com/roots/trellis.git
+    - uses: ./
+      with:
+        ansible-vault-password: fake
+        auto-init: false
+  test-with-trellis-no-cache-virtualenv:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+    - run: git clone https://github.com/roots/trellis.git
+    - uses: ./
+      with:
+        ansible-vault-password: fake
+        cache-virtualenv: false
