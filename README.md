@@ -1,6 +1,6 @@
 # setup-trellis-cli
 
-[![Build status](https://img.shields.io/github/workflow/status/roots/setup-trellis-cli/test?style=flat-square)](https://github.com/roots/setup-trellis-cli/actions)
+[![Build status](https://img.shields.io/github/workflow/status/roots/setup-trellis-cli/Tests?style=flat-square)](https://github.com/roots/setup-trellis-cli/actions)
 ![GitHub release](https://img.shields.io/github/release/roots/setup-trellis-cli?style=flat-square)
 
 The `roots/setup-trellis-cli` action is a JavaScript action that sets up Trellis CLI in your GitHub Actions workflow by:
