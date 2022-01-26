@@ -32,7 +32,7 @@ See [Workflow syntax for GitHub Actions](https://help.github.com/en/articles/wor
 
 ## Inputs
 
-### `ansible-vault-password`
+#### `ansible-vault-password`
 **Required** Ansible Vault password. Use a [GitHub secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets) for this value (example in usage
 above).
 
@@ -45,7 +45,7 @@ gh secret set ANSIBLE_VAULT_PASSWORD -b $(cat trellis/.vault_pass)
 Note: this is a required input even if you don't use Ansible Vault. Just set
 this to any random placeholder string.
 
-### `auto-init`
+#### `auto-init`
 Whether to automatically run the `trellis init` command after install.
 
 **Default**: `true`
