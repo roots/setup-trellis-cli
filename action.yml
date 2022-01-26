@@ -1,5 +1,9 @@
 name: 'Roots - Setup trellis-cli'
 description: 'Sets up Trellis CLI in your GitHub Actions workflow.'
+author: Scott Walkinshaw
+branding:
+  icon: 'package'  
+  color: 'blue'
 inputs:
   auto-init:
     description: 'Whether to automatically run the `init` command after install (default: true).'
