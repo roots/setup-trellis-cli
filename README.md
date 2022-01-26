@@ -17,7 +17,7 @@ The `roots/setup-trellis-cli` action is a JavaScript action that sets up Trellis
 runs-on: ubuntu-latest
 steps:
 - uses: actions/checkout@v2
-- uses: roots/setup-trellis-cli@main
+- uses: roots/setup-trellis-cli@v1
   with:
     ansible-vault-password: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
 - run: trellis deploy production

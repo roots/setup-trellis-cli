@@ -18,7 +18,7 @@ jobs:
     - uses: webfactory/ssh-agent@v0.5.4
       with:
         ssh-private-key: ${{ secrets.TRELLIS_DEPLOY_SSH_PRIVATE_KEY }}
-    - uses: roots/setup-trellis-cli@main
+    - uses: roots/setup-trellis-cli@v1
       with:
         ansible-vault-password: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
     - name: Deploy
