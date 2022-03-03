@@ -24,7 +24,8 @@ steps:
 ```
 
 See the [examples](./examples) for some full workflow examples including a site
-with a [Sage](https://github.com/roots/sage)-based theme.
+with a [Sage](https://github.com/roots/sage)-based theme and a project
+with a [multi-repo](https://github.com/roots/trellis/issues/883#issuecomment-329054858) [setup](https://github.com/roots/trellis/issues/883#issuecomment-329052189).
 
 See [Workflow syntax for GitHub Actions](https://help.github.com/en/articles/workflow-syntax-for-github-actions) for more details on writing GitHub workflows.
 
