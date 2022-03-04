@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
       with:
         node-version: 16.x
     - run: mkdir trellis
@@ -27,7 +27,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
       with:
         node-version: 16.x
     - run: git clone https://github.com/roots/trellis.git
@@ -40,7 +40,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
       with:
         node-version: 16.x
     - run: git clone https://github.com/roots/trellis.git
@@ -54,7 +54,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
       with:
         node-version: 16.x
     - run: git clone https://github.com/roots/trellis.git
@@ -68,7 +68,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
       with:
         node-version: 16.x
     - run: git clone https://github.com/roots/trellis.git
