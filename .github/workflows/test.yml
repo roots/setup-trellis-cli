@@ -9,7 +9,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - uses: actions/setup-node@v3
@@ -24,7 +24,7 @@ jobs:
   test-with-trellis:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - uses: actions/setup-node@v3
@@ -37,7 +37,7 @@ jobs:
   test-with-trellis-no-galaxy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - uses: actions/setup-node@v3
@@ -51,7 +51,7 @@ jobs:
   test-with-trellis-no-auto-init:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - uses: actions/setup-node@v3
@@ -65,7 +65,7 @@ jobs:
   test-with-trellis-no-cache-virtualenv:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - uses: actions/setup-node@v3
