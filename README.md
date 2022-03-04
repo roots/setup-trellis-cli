@@ -80,6 +80,38 @@ Note: if you want a specific version, include the 'v' in the version name (eg:
 
 **Default**: `latest`
 
+## SSH known hosts
+Most usages of this action will require SSH known hosts to be set, including the example workflow which uses `shimataro/ssh-key-action`.
+
+Since the GitHub Action runner will be the client SSHing into your remote Trellis server, this is needed to allow a connection from GitHub -> your server, which means the known host is for the remote server hostname.
+
+This value is _not_ just the hostname/IP, it needs be in OpenSSH format which looks like this:
+
+```plain
+example.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+```
+
+Or the hashed output:
+```plain
+|1|nLf9avvc+tz8nFgUW/3tPwjTA4Q=|dLZn1guXUrBjLg4s23ird724guA= ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+```
+
+There's a few ways to get this value:
+
+1. using trellis-cli:
+```bash
+trellis key generate
+```
+2. manually using `ssh-keyscan`:
+```bash
+ssh-keyscan -t ed25519 -H MY_SERVER_HOSTNAME
+```
+3. from your `~/.ssh/known_hosts` file (if you've previously SSH'd into the server):
+
+Note: always use a GitHub secret to store this value. Do not hardcode the plain
+text value in your workflow file. `trellis key generate` will use a secret
+automatically.
+
 ## Outputs
 
 #### `version`
