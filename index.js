@@ -124,7 +124,11 @@ async function withCache(cacheable, paths, baseKey, hashPattern) {
     return;
   }
 
-  await cache.saveCache(paths, primaryKey);
+  try {
+    await cache.saveCache(paths, primaryKey);
+  } catch {
+    await cache.saveCache(paths, primaryKey + "-retry");
+  }
 }
 
 async function cachedInit() {
@@ -198,7 +202,11 @@ async function run() {
       });
     }
   } catch (error) {
-    core.setFailed(error.message);
+    if (error.name === cache.ReserveCacheError.name) {
+      core.info(error.message);
+    } else {
+      core.setFailed(error.message);
+    }
   }
 }
 
