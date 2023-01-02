@@ -64464,7 +64464,8 @@ async function getRelease(version) {
   core.debug(`Finding release for ${version} (${osPlatform}_${osArch})`);
   const release = await fetchRelease(version);
 
-  if (!release) {
+  if (!release.name) {
+    core.info(`API response: ${release}`);
     throw new Error(`No trellis-cli release found for version ${version}`);
   }
 
@@ -64488,6 +64489,12 @@ async function getRelease(version) {
 
 async function fetchRelease(version) {
   const client = new http.HttpClient('setup-trellis-cli-client');
+
+  let headers = {};
+  if (process.env.GITHUB_TOKEN) {
+    headers['authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
+  }
+
   let url = null;
 
   if (version === 'latest' || version === '') {
@@ -64496,7 +64503,7 @@ async function fetchRelease(version) {
     url = `https://api.github.com/repos/roots/trellis-cli/releases/tags/${version}`;
   }
 
-  const response = await client.get(url);
+  const response = await client.get(url, headers);
   const body = await response.readBody();
   return JSON.parse(body);
 }
