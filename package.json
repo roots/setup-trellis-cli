@@ -1,6 +1,6 @@
 {
   "name": "setup-trellis-cli",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Sets up Trellis CLI for GitHub Action workflows",
   "main": "index.js",
   "scripts": {
