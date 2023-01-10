@@ -1,6 +1,6 @@
 # setup-trellis-cli
 
-[![Build status](https://img.shields.io/github/workflow/status/roots/setup-trellis-cli/Tests?style=flat-square)](https://github.com/roots/setup-trellis-cli/actions)
+[![Build status](https://img.shields.io/github/actions/workflow/status/roots/setup-trellis-cli/test.yml?branch=main&style=flat-square)](https://github.com/roots/setup-trellis-cli/actions)
 ![GitHub release](https://img.shields.io/github/release/roots/setup-trellis-cli?style=flat-square)
 
 The `roots/setup-trellis-cli` action is a JavaScript action that sets up [Trellis CLI](https://github.com/roots/trellis-cli) in your GitHub Actions workflow by:
@@ -120,12 +120,6 @@ The Trellis CLI version installed. Example: `v1.5.1`
 ## Contributing
 
 Contributions are welcome from everyone. We have [contributing guidelines](https://github.com/roots/guidelines/blob/master/CONTRIBUTING.md) to help you get started.
-
-## Trellis sponsors
-
-Help support our open-source development efforts by [becoming a GitHub sponsor](https://github.com/sponsors/roots) or [patron](https://www.patreon.com/rootsdev).
-
-<a href="https://k-m.com/"><img src="https://cdn.roots.io/app/uploads/km-digital.svg" alt="KM Digital" width="200" height="150"></a> <a href="https://carrot.com/"><img src="https://cdn.roots.io/app/uploads/carrot.svg" alt="Carrot" width="200" height="150"></a> <a href="https://wordpress.com/"><img src="https://cdn.roots.io/app/uploads/wordpress.svg" alt="WordPress.com" width="200" height="150"></a> <a href="https://pantheon.io/"><img src="https://cdn.roots.io/app/uploads/pantheon.svg" alt="Pantheon" width="200" height="150"></a>
 
 ## Community
 
