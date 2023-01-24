@@ -32,7 +32,7 @@ async function getRelease(version) {
   const release = await fetchRelease(version);
 
   if (!release.name) {
-    core.info(`API response: ${release}`);
+    core.info(`API response: ${JSON.stringify(release)}`);
     throw new Error(`No trellis-cli release found for version ${version}`);
   }
 
