@@ -20,6 +20,9 @@ inputs:
     description: 'Whether to automatically run `trellix galaxy install` (default: true).'
     required: false
     default: true
+  repo-token:
+    description: 'GitHub repository access token used for API authentication. Set this to avoid API rate limits.'
+    required: false
   trellis-directory:
     description: 'Path to Trellis project directory'
     required: false

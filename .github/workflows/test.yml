@@ -21,6 +21,7 @@ jobs:
         ansible-vault-password: fake
         auto-init: false
         galaxy-install: false
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
   test-with-trellis:
     runs-on: ubuntu-latest
     steps:
@@ -34,6 +35,7 @@ jobs:
     - uses: ./
       with:
         ansible-vault-password: fake
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
   test-with-trellis-no-galaxy:
     runs-on: ubuntu-latest
     steps:
@@ -48,6 +50,7 @@ jobs:
       with:
         ansible-vault-password: fake
         galaxy-install: false
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
   test-with-trellis-no-auto-init:
     runs-on: ubuntu-latest
     steps:
@@ -62,6 +65,7 @@ jobs:
       with:
         ansible-vault-password: fake
         auto-init: false
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
   test-with-trellis-no-cache-virtualenv:
     runs-on: ubuntu-latest
     steps:
@@ -76,3 +80,19 @@ jobs:
       with:
         ansible-vault-password: fake
         cache-virtualenv: false
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+  test-no-repo-token:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+    - run: mkdir trellis
+    - uses: ./
+      with:
+        ansible-vault-password: fake
+        auto-init: false
+        galaxy-install: false

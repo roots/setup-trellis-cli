@@ -20,6 +20,7 @@ jobs:
         ssh-private-key: ${{ secrets.TRELLIS_DEPLOY_SSH_PRIVATE_KEY }}
     - uses: roots/setup-trellis-cli@v1
       with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
         ansible-vault-password: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
     - name: Deploy
       run: trellis deploy production
