@@ -64447,7 +64447,7 @@ function isExactCacheKeyMatch(key, cacheKey) {
   return !!(cacheKey && cacheKey.localeCompare(key, undefined, { sensitivity: "accent" }) === 0);
 }
 
-async function getRelease(version) {
+async function getRelease(version, token) {
   let osPlatform = os.platform();
   const platformMappings = {
     'win32': 'windows'
@@ -64462,10 +64462,11 @@ async function getRelease(version) {
   osArch = archMappings[osArch] || osArch;
 
   core.debug(`Finding release for ${version} (${osPlatform}_${osArch})`);
-  const release = await fetchRelease(version);
+  const release = await fetchRelease(version, token);
 
   if (!release.name) {
-    core.info(`API response: ${JSON.stringify(release)}`);
+    core.warning(`API response: ${JSON.stringify(release)}`);
+    core.warning(`If you are hitting API rate limits, see the README for instructions on using a GitHub token.`);
     throw new Error(`No trellis-cli release found for version ${version}`);
   }
 
@@ -64487,12 +64488,14 @@ async function getRelease(version) {
   }
 }
 
-async function fetchRelease(version) {
+async function fetchRelease(version, token) {
   const client = new http.HttpClient('setup-trellis-cli-client');
 
   let headers = {};
-  if (process.env.GITHUB_TOKEN) {
-    headers['authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
+  if (token !== '') {
+    headers['authorization'] = `Bearer ${token}`;
+  } else {
+    core.warning(`No repo-token provided. We recommend setting one to avoid rate limiting. See the README for instructions.`);
   }
 
   let url = null;
@@ -64591,9 +64594,10 @@ async function run() {
     const galaxyInstall = core.getBooleanInput('galaxy-install');
     const trellisPath = core.getInput('trellis-directory') || 'trellis';
     const version = core.getInput('version') || 'latest';
+    const token = core.getInput('repo-token');
 
     await core.group('Install trellis-cli', async () => {
-      const release = await getRelease(version);
+      const release = await getRelease(version, token);
       const cliPath = await downloadRelease(release);
       core.addPath(cliPath);
       core.debug(`Added ${cliPath} to PATH`);

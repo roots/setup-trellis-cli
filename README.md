@@ -20,6 +20,7 @@ steps:
 - uses: roots/setup-trellis-cli@v1
   with:
     ansible-vault-password: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+    repo-token: ${{ secrets.GITHUB_TOKEN }}
 - run: trellis deploy production
 ```
 
@@ -45,6 +46,13 @@ gh secret set ANSIBLE_VAULT_PASSWORD -b $(cat trellis/.vault_pass)
 
 Note: this is a required input even if you don't use Ansible Vault. Just set
 this to any random placeholder string.
+
+#### `repo-token`
+Optionally set the GitHub token for API authorization. Setting this token will avoid any potential API rate limits.
+
+The best option is to set this to the default token secret which GitHub automatically sets: `secrets.GITHUB_TOKEN`.
+
+See https://docs.github.com/en/actions/security-guides/automatic-token-authentication
 
 #### `auto-init`
 Whether to automatically run the `trellis init` command after install.
