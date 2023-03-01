@@ -1,3 +1,10 @@
+# Placeholder `setup-trellis-cli` action for deploying Trellis sites using multiple repositories
+#
+# ⚠️ This example assumes your theme is using Sage 10
+#
+# Replace `sage` with your theme folder
+# Replace `example/example.com` with your github repository
+
 name: Deploy site
 
 on:
@@ -17,10 +24,10 @@ jobs:
       with:
         node-version: '16'
         cache: yarn
-        cache-dependency-path: site/web/app/themes/my_theme/yarn.lock
+        cache-dependency-path: site/web/app/themes/sage/yarn.lock
     - uses: actions/checkout@v2
       with:
-        repository: my_org/my_trellis_repo
+        repository: example/example.com
         path: trellis
         token: ${{ secrets.TRELLIS_REPOSITORY_PERSONAL_ACCESS_TOKEN }}
     - uses: shimataro/ssh-key-action@v2
