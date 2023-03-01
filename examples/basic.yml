@@ -1,3 +1,5 @@
+# Placeholder `setup-trellis-cli` action for deploying Trellis sites
+
 name: Deploy site
 
 on:

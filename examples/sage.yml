@@ -1,3 +1,9 @@
+# Placeholder `setup-trellis-cli` action for deploying Trellis sites with Sage 10-based themes
+#
+# ⚠️ This example assumes your theme is using Sage 10
+#
+# Replace `sage` with your theme folder
+
 name: Deploy site
 
 on:
@@ -15,7 +21,7 @@ jobs:
       with:
         node-version: '16'
         cache: yarn
-        cache-dependency-path: site/web/app/themes/my_theme/yarn.lock
+        cache-dependency-path: site/web/app/themes/sage/yarn.lock
     - uses: shimataro/ssh-key-action@v2
       with:
         key: ${{ secrets.TRELLIS_DEPLOY_SSH_PRIVATE_KEY }}
