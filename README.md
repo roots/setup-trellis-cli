@@ -10,6 +10,8 @@ The `roots/setup-trellis-cli` action is a JavaScript action that sets up [Trelli
 * Initializing the [Trellis](https://github.com/roots/trellis) project in the GitHub repo by running the `trellis init` command.
     * Creates a virtual environment and installs dependencies (mainly Ansible) with automatic caching.
     * Installs Ansible galaxy roles by running `trellis galaxy install` with automatic caching.
+    
+See the [**Deploying Trellis WordPress Sites with GitHub Actions guide**](https://roots.io/trellis/docs/deploy-with-github-actions/).
 
 ## Example usage
 
