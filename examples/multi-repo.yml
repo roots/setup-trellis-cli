@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         path: site
     - uses: actions/setup-node@v4
@@ -25,7 +25,7 @@ jobs:
         node-version: '16'
         cache: yarn
         cache-dependency-path: site/web/app/themes/sage/yarn.lock
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         repository: example/example.com
         path: trellis
