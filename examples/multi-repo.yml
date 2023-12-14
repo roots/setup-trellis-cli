@@ -34,7 +34,7 @@ jobs:
       with:
         key: ${{ secrets.TRELLIS_DEPLOY_SSH_PRIVATE_KEY }}
         known_hosts: ${{ secrets.TRELLIS_DEPLOY_SSH_KNOWN_HOSTS }}
-    - uses: webfactory/ssh-agent@v0.5.4
+    - uses: webfactory/ssh-agent@v0.8.0
       with:
         ssh-private-key: ${{ secrets.TRELLIS_DEPLOY_SSH_PRIVATE_KEY }}
     - uses: roots/setup-trellis-cli@v1
