@@ -22,7 +22,7 @@ jobs:
         path: site
     - uses: actions/setup-node@v4
       with:
-        node-version: '16'
+        node-version: '20'
         cache: yarn
         cache-dependency-path: site/web/app/themes/sage/yarn.lock
     - uses: actions/checkout@v4
