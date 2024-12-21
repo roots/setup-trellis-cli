@@ -37,6 +37,9 @@ jobs:
     - uses: webfactory/ssh-agent@v0.9.0
       with:
         ssh-private-key: ${{ secrets.TRELLIS_DEPLOY_SSH_PRIVATE_KEY }}
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
     - uses: roots/setup-trellis-cli@v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
