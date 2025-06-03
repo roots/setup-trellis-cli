@@ -17,7 +17,7 @@ inputs:
     required: false
     default: true
   galaxy-install:
-    description: 'Whether to automatically run `trellix galaxy install` (default: true).'
+    description: 'Whether to automatically run `trellis galaxy install` (default: true).'
     required: false
     default: true
   repo-token:
