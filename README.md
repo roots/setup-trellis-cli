@@ -2,6 +2,8 @@
 
 [![Build status](https://img.shields.io/github/actions/workflow/status/roots/setup-trellis-cli/test.yml?branch=main&style=flat-square)](https://github.com/roots/setup-trellis-cli/actions)
 ![GitHub release](https://img.shields.io/github/release/roots/setup-trellis-cli?style=flat-square)
+[![Follow Roots](https://img.shields.io/badge/follow%20@rootswp-1da1f2?logo=twitter&logoColor=ffffff&message=&style=flat-square)](https://twitter.com/rootswp)
+[![Sponsor Roots](https://img.shields.io/badge/sponsor%20roots-525ddc?logo=github&style=flat-square&logoColor=ffffff&message=)](https://github.com/sponsors/roots)
 
 The `roots/setup-trellis-cli` action is a JavaScript action that sets up [Trellis CLI](https://github.com/roots/trellis-cli) in your GitHub Actions workflow by:
 
@@ -12,6 +14,10 @@ The `roots/setup-trellis-cli` action is a JavaScript action that sets up [Trelli
     * Installs Ansible galaxy roles by running `trellis galaxy install` with automatic caching.
     
 See the [**Deploying Trellis WordPress Sites with GitHub Actions guide**](https://roots.io/trellis/docs/deploy-with-github-actions/).
+
+## Support us
+
+We're dedicated to pushing modern WordPress development forward through our open source projects, and we need your support to keep building. You can support our work by purchasing [Radicle](https://roots.io/radicle/), our recommended WordPress stack, or by [sponsoring us on GitHub](https://github.com/sponsors/roots). Every contribution directly helps us create better tools for the WordPress ecosystem.
 
 ## Example usage
 
@@ -127,16 +133,12 @@ automatically.
 #### `version`
 The Trellis CLI version installed. Example: `v1.5.1`
 
-## Contributing
-
-Contributions are welcome from everyone. We have [contributing guidelines](https://github.com/roots/guidelines/blob/master/CONTRIBUTING.md) to help you get started.
-
 ## Community
 
 Keep track of development and community news.
 
-- Join us on Roots Slack by becoming a [GitHub sponsor](https://github.com/sponsors/roots) or [patron](https://www.patreon.com/rootsdev)
-- Participate on the [Roots Discourse](https://discourse.roots.io/)
+- Join us on Discord by [sponsoring us on GitHub](https://github.com/sponsors/roots)
+- Join us on [Roots Discourse](https://discourse.roots.io/)
 - Follow [@rootswp on Twitter](https://twitter.com/rootswp)
-- Read and subscribe to the [Roots Blog](https://roots.io/blog/)
+- Follow the [Roots Blog](https://roots.io/blog/)
 - Subscribe to the [Roots Newsletter](https://roots.io/subscribe/)
