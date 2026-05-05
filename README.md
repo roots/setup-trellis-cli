@@ -24,7 +24,7 @@ Roots is an independent open source org, supported only by developers like you. 
 ```yaml
 runs-on: ubuntu-latest
 steps:
-- uses: actions/checkout@v2
+- uses: actions/checkout@v6
 - uses: roots/setup-trellis-cli@v1
   with:
     ansible-vault-password: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}

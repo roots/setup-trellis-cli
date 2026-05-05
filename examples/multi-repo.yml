@@ -1,6 +1,6 @@
 # Placeholder `setup-trellis-cli` action for deploying Trellis sites using multiple repositories
 #
-# ⚠️ This example assumes your theme is using Sage 10
+# ⚠️ This example assumes your theme is using Sage 11
 #
 # Replace `sage` with your theme folder
 # Replace `example/example.com` with your github repository
@@ -17,15 +17,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         path: site
-    - uses: actions/setup-node@v4
+    - uses: actions/setup-node@v6
       with:
-        node-version: '20'
-        cache: yarn
-        cache-dependency-path: site/web/app/themes/sage/yarn.lock
-    - uses: actions/checkout@v4
+        node-version: '24'
+        cache: npm
+        cache-dependency-path: site/web/app/themes/sage/package-lock.json
+    - uses: actions/checkout@v6
       with:
         repository: example/example.com
         path: trellis
@@ -34,12 +34,12 @@ jobs:
       with:
         key: ${{ secrets.TRELLIS_DEPLOY_SSH_PRIVATE_KEY }}
         known_hosts: ${{ secrets.TRELLIS_DEPLOY_SSH_KNOWN_HOSTS }}
-    - uses: webfactory/ssh-agent@v0.9.0
+    - uses: webfactory/ssh-agent@v0.10.0
       with:
         ssh-private-key: ${{ secrets.TRELLIS_DEPLOY_SSH_PRIVATE_KEY }}
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v6
       with:
-        python-version: '3.12'
+        python-version: '3.13'
     - uses: roots/setup-trellis-cli@v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
