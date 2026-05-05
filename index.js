@@ -1,14 +1,14 @@
-const cache = require('@actions/cache');
-const core = require('@actions/core');
-const exec = require('@actions/exec');
-const fs = require('fs');
-const glob = require('@actions/glob');
-const http = require('@actions/http-client');
-const io = require('@actions/io');
-const tc = require('@actions/tool-cache');
-const os = require('os');
-const path = require('path');
-const process = require('process');
+import * as cache from '@actions/cache';
+import * as core from '@actions/core';
+import * as exec from '@actions/exec';
+import fs from 'fs';
+import * as glob from '@actions/glob';
+import * as http from '@actions/http-client';
+import * as io from '@actions/io';
+import * as tc from '@actions/tool-cache';
+import os from 'os';
+import path from 'path';
+import process from 'process';
 
 function isExactCacheKeyMatch(key, cacheKey) {
   return !!(cacheKey && cacheKey.localeCompare(key, undefined, { sensitivity: "accent" }) === 0);

@@ -1,6 +1,4 @@
-const process = require('process');
-const cp = require('child_process');
-const path = require('path');
+import { test, expect } from 'vitest';
 
 test('no-op', async () => {
   await expect(true).toEqual(true);
