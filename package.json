@@ -37,7 +37,7 @@
     "@actions/tool-cache": "^4.0.0"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.38.4",
+    "@vercel/ncc": "^0.44.0",
     "vitest": "^4.1.5"
   }
 }
