@@ -9,6 +9,7 @@ import * as tc from '@actions/tool-cache';
 import os from 'os';
 import path from 'path';
 import process from 'process';
+import { getPythonIdentity, virtualenvBaseKey, virtualenvMatchesInterpreter } from './cache-key.js';
 
 function isExactCacheKeyMatch(key, cacheKey) {
   return !!(cacheKey && cacheKey.localeCompare(key, undefined, { sensitivity: "accent" }) === 0);
@@ -113,7 +114,7 @@ async function ensurePython3() {
   }
 }
 
-async function withCache(cacheable, paths, baseKey, hashPattern) {
+async function withCache(cacheable, paths, baseKey, hashPattern, canSave = () => true) {
   const keyPrefix = `${process.env.RUNNER_OS}-${baseKey}-`;
   const hash = await glob.hashFiles(hashPattern);
   const primaryKey = `${keyPrefix}${hash}`;
@@ -134,6 +135,10 @@ async function withCache(cacheable, paths, baseKey, hashPattern) {
     return;
   }
 
+  if (!canSave()) {
+    return;
+  }
+
   try {
     await cache.saveCache(paths, primaryKey);
   } catch {
@@ -141,10 +146,46 @@ async function withCache(cacheable, paths, baseKey, hashPattern) {
   }
 }
 
+function virtualenvBelongsTo(virtualenvPath, identity) {
+  let pyvenvCfg;
+
+  try {
+    pyvenvCfg = fs.readFileSync(path.join(virtualenvPath, 'pyvenv.cfg'), 'utf8');
+  } catch {
+    pyvenvCfg = '';
+  }
+
+  if (virtualenvMatchesInterpreter(pyvenvCfg, identity)) {
+    return true;
+  }
+
+  core.warning(`Virtualenv was not built by ${identity.baseExecutable}, not saving it to the cache.`);
+  return false;
+}
+
 async function cachedInit() {
-  return await withCache(async () => {
-    await exec.exec('trellis init')
-  }, [path.join('.trellis', 'virtualenv')], 'trellis-venv', '**/requirements.txt');
+  const init = () => exec.exec('trellis init');
+  const virtualenvPath = path.join('.trellis', 'virtualenv');
+  const absoluteVirtualenvPath = path.resolve(virtualenvPath);
+  let identity;
+
+  try {
+    identity = await getPythonIdentity();
+  } catch (error) {
+    core.warning(`Could not identify python3, skipping virtualenv cache. ${error.message}`);
+    await init();
+    return;
+  }
+
+  core.info(`Virtualenv cache identity: ${JSON.stringify({ ...identity, virtualenvPath: absoluteVirtualenvPath })}`);
+
+  return await withCache(
+    init,
+    [virtualenvPath],
+    virtualenvBaseKey(identity, absoluteVirtualenvPath),
+    '**/requirements.txt',
+    () => virtualenvBelongsTo(virtualenvPath, identity),
+  );
 }
 
 async function runGalaxyInstall() {

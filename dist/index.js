@@ -41459,8 +41459,8 @@ function getExecOutput(commandLine, args, options) {
         let stdout = '';
         let stderr = '';
         //Using string decoder covers the case where a mult-byte character is split
-        const stdoutDecoder = new StringDecoder('utf8');
-        const stderrDecoder = new StringDecoder('utf8');
+        const stdoutDecoder = new external_string_decoder_.StringDecoder('utf8');
+        const stderrDecoder = new external_string_decoder_.StringDecoder('utf8');
         const originalStdoutListener = (_a = options === null || options === void 0 ? void 0 : options.listeners) === null || _a === void 0 ? void 0 : _a.stdout;
         const originalStdErrListener = (_b = options === null || options === void 0 ? void 0 : options.listeners) === null || _b === void 0 ? void 0 : _b.stderr;
         const stdErrListener = (data) => {
@@ -92520,7 +92520,121 @@ function _unique(values) {
 //# sourceMappingURL=tool-cache.js.map
 ;// CONCATENATED MODULE: external "process"
 const external_process_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("process");
+;// CONCATENATED MODULE: ./cache-key.js
+
+
+
+
+
+/**
+ * Identity of the python3 interpreter that `trellis init` builds the virtualenv with.
+ *
+ * @typedef {object} PythonIdentity
+ * @property {string} executable Fully resolved path of the interpreter binary.
+ * @property {string} baseExecutable Unresolved path the virtualenv links bin/python3 to.
+ * @property {string} version Full Python version (e.g. 3.13.7).
+ * @property {string} extSuffix Extension module suffix, which carries the ABI and architecture.
+ * @property {string} osRelease Distribution and release from /etc/os-release (e.g. ubuntu-24.04).
+ */
+
+/**
+ * Parses the output of python-identity.py.
+ *
+ * @param {string} stdout Output of the identity script.
+ * @returns {PythonIdentity} Interpreter identity.
+ * @throws {Error} When the output is not a valid identity.
+ */
+function parsePythonIdentity(stdout) {
+  const lastLine = stdout.trim().split('\n').pop();
+  let identity;
+
+  try {
+    identity = JSON.parse(lastLine);
+  } catch {
+    throw new Error(`Unexpected Python identity output: ${stdout}`);
+  }
+
+  const fields = ['executable', 'baseExecutable', 'version', 'extSuffix', 'osRelease'];
+
+  if (!fields.every((field) => typeof identity?.[field] === 'string') || !/^\d+\.\d+\.\d+/.test(identity.version)) {
+    throw new Error(`Unexpected Python identity output: ${stdout}`);
+  }
+
+  return identity;
+}
+
+/**
+ * Reads the identity of the python3 interpreter on PATH.
+ *
+ * @returns {Promise<PythonIdentity>} Interpreter identity.
+ * @throws {Error} When python-identity.py cannot be read, or python3 fails or prints an unexpected identity.
+ */
+async function getPythonIdentity() {
+  const script = external_fs_namespaceObject.readFileSync(__nccwpck_require__.ab + "python-identity.py", 'utf8');
+  const { exitCode, stdout, stderr } = await getExecOutput('python3', ['-I', '-S', '-c', script], {
+    ignoreReturnCode: true,
+    silent: true,
+  });
+
+  if (exitCode !== 0) {
+    throw new Error(`python3 exited with code ${exitCode}: ${stderr.trim()}`);
+  }
+
+  return parsePythonIdentity(stdout);
+}
+
+/**
+ * Builds the base cache key for the trellis-cli virtualenv.
+ *
+ * A virtualenv links bin/python3 to the interpreter path it was created with
+ * and writes its own absolute path into its scripts, so it is only valid for
+ * that interpreter, at that path, on that OS release, at that location. The
+ * key hashes all of them, so a change to any is a cache miss. The
+ * `trellis-virtualenv` base keeps these entries out of the `trellis-venv-`
+ * restore prefix that older releases of this action use.
+ *
+ * @param {PythonIdentity} identity Interpreter identity.
+ * @param {string} virtualenvPath Absolute path of the virtualenv.
+ * @returns {string} Base cache key.
+ */
+function virtualenvBaseKey(identity, virtualenvPath) {
+  const hash = external_crypto_namespaceObject.createHash('sha256')
+    .update(JSON.stringify([identity.executable, identity.baseExecutable, identity.extSuffix, identity.osRelease, virtualenvPath]))
+    .digest('hex')
+    .slice(0, 16);
+
+  return `trellis-virtualenv-python${identity.version}-${hash}`;
+}
+
+/**
+ * Checks that a virtualenv's pyvenv.cfg was written by the given interpreter.
+ * `trellis init` reuses an existing virtualenv, which may have been built by
+ * a different interpreter than the one the cache key describes.
+ *
+ * @param {string} pyvenvCfg Contents of the virtualenv's pyvenv.cfg.
+ * @param {PythonIdentity} identity Interpreter identity.
+ * @returns {boolean} Whether the virtualenv belongs to the interpreter.
+ */
+function virtualenvMatchesInterpreter(pyvenvCfg, identity) {
+  const config = Object.fromEntries(
+    pyvenvCfg
+      .split('\n')
+      .filter((line) => line.includes('='))
+      .map((line) => {
+        const [key, ...value] = line.split('=');
+        return [key.trim(), value.join('=').trim()];
+      }),
+  );
+
+  if (config.home !== external_path_.dirname(identity.baseExecutable)) {
+    return false;
+  }
+
+  return config.executable === undefined || config.executable === identity.executable;
+}
+
 ;// CONCATENATED MODULE: ./index.js
+
 
 
 
@@ -92636,7 +92750,7 @@ async function ensurePython3() {
   }
 }
 
-async function withCache(cacheable, paths, baseKey, hashPattern) {
+async function withCache(cacheable, paths, baseKey, hashPattern, canSave = () => true) {
   const keyPrefix = `${external_process_namespaceObject.env.RUNNER_OS}-${baseKey}-`;
   const hash = await lib_glob_hashFiles(hashPattern);
   const primaryKey = `${keyPrefix}${hash}`;
@@ -92657,6 +92771,10 @@ async function withCache(cacheable, paths, baseKey, hashPattern) {
     return;
   }
 
+  if (!canSave()) {
+    return;
+  }
+
   try {
     await cache_saveCache(paths, primaryKey);
   } catch {
@@ -92664,10 +92782,46 @@ async function withCache(cacheable, paths, baseKey, hashPattern) {
   }
 }
 
+function virtualenvBelongsTo(virtualenvPath, identity) {
+  let pyvenvCfg;
+
+  try {
+    pyvenvCfg = external_fs_namespaceObject.readFileSync(external_path_.join(virtualenvPath, 'pyvenv.cfg'), 'utf8');
+  } catch {
+    pyvenvCfg = '';
+  }
+
+  if (virtualenvMatchesInterpreter(pyvenvCfg, identity)) {
+    return true;
+  }
+
+  warning(`Virtualenv was not built by ${identity.baseExecutable}, not saving it to the cache.`);
+  return false;
+}
+
 async function cachedInit() {
-  return await withCache(async () => {
-    await exec_exec('trellis init')
-  }, [external_path_.join('.trellis', 'virtualenv')], 'trellis-venv', '**/requirements.txt');
+  const init = () => exec_exec('trellis init');
+  const virtualenvPath = external_path_.join('.trellis', 'virtualenv');
+  const absoluteVirtualenvPath = external_path_.resolve(virtualenvPath);
+  let identity;
+
+  try {
+    identity = await getPythonIdentity();
+  } catch (error) {
+    warning(`Could not identify python3, skipping virtualenv cache. ${error.message}`);
+    await init();
+    return;
+  }
+
+  info(`Virtualenv cache identity: ${JSON.stringify({ ...identity, virtualenvPath: absoluteVirtualenvPath })}`);
+
+  return await withCache(
+    init,
+    [virtualenvPath],
+    virtualenvBaseKey(identity, absoluteVirtualenvPath),
+    '**/requirements.txt',
+    () => virtualenvBelongsTo(virtualenvPath, identity),
+  );
 }
 
 async function runGalaxyInstall() {
