@@ -71,7 +71,11 @@ If you want to manage dependencies manually yourself, disable this option.
 
 #### `cache-virtualenv`
 When enabled, the virtualenv created by the `trellis init` command is automatically
-cached.
+cached. The cache key includes the OS release, the path, full version and ABI of
+`python3`, and the virtualenv's location, so an OS release change, a Python patch release
+or a different workspace path starts a fresh cache rather than restoring a virtualenv built
+for a different interpreter. A virtualenv that was not built by the current `python3` is
+not saved.
 
 **Default**: `true`
 
